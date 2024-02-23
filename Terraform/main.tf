@@ -122,15 +122,15 @@ resource "azurerm_virtual_machine" "example" {
     inline = [
       #        "chmod -R +x /tmp/build",
       #        "/var/build args",
-      "sudo apt-get update",
+      "sudo apt-get update -y",
       "sudo apt-get install -y apache2",
       "sudo apt-get install -y nodejs",
       "sudo apt-get install -y npm",
-      " cd /var/www/html",
+      "cd /var/www/html",
       "sudo git clone https://github.com/mukthiyarglobal/Azure-vm-demo.git ",
       "cd Azure-vm-demo",
-      "npm run install",
-      "npm run build",
+      "sudo npm install",
+      "sudo npm run build",
       #     # "sudo systemctl status apache2",
       #     # "sudo systemctl restart apache2",
     ]
@@ -141,7 +141,7 @@ resource "azurerm_virtual_machine" "example" {
     user     = var.admin_username
     password = var.admin_password
     #   # private_key = file("/root/.ssh/id_rsa.pub")
-    #   # timeout     = "4m"
+    timeout  = "4m"
   }
   # provisioner "file" {
   #   source      = "/var/lib/jenkins/workspace/terrademo"
