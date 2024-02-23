@@ -77,6 +77,20 @@ resource "azurerm_network_security_rule" "allow_http" {
   destination_address_prefix  = "*"
 }
 
+resource "azurerm_network_security_rule" "AllowAnyCustom3000Inbound" {
+  name                        = "AllowAnyCustom3000Inbound"
+  priority                    = 1011
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "3000"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.demo-RG.name
+  network_security_group_name = azurerm_network_security_group.example.name
+}
+
 resource "azurerm_network_interface_security_group_association" "association" {
   network_interface_id      = azurerm_network_interface.example.id
   network_security_group_id = azurerm_network_security_group.example.id
@@ -131,6 +145,8 @@ resource "azurerm_virtual_machine" "example" {
       "cd Azure-vm-demo",
       "sudo npm install",
       "sudo npm run build",
+      "sudo npm i -g pm2",
+      "pm2 start --name=react npm -- start",
       #     # "sudo systemctl status apache2",
       #     # "sudo systemctl restart apache2",
     ]
